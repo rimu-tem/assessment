@@ -9,27 +9,42 @@ assessmentButton.addEventListener(
   () => {
     const userName = userNameInput.value;
     if (userName.length === 0) {
-      //名前が空の時は処理を終了する
+      // 名前が空の時は処理を終了する
       return;
     }
 
-    //TODO診断結果表示エリアの作成
+    // 診断結果表示エリアの作成
     resultDivision.innerText = '';
-    const heading = document.createElement('h3');
-    heading.innerText = '診断結果'
-    resultDivision.appendChild(heading);
+    
+    // headerDivision の作成
+    const headerDivision = document.createElement('div');
+    headerDivision.setAttribute('class', 'card-header text-bg-primary');
+    headerDivision.innerText = '診断結果';
+
+    // bodyDivision の作成
+    const bodyDivision = document.createElement('div');
+    bodyDivision.setAttribute('class', 'card-body');
 
     const paragraph = document.createElement('p');
+    paragraph.setAttribute('class', 'card-text');
     const result = assessment(userName);
     paragraph.innerText = result;
-    resultDivision.appendChild(paragraph);
+    bodyDivision.appendChild(paragraph);
 
-    //TODOツイートエリアの作成
+    // resultDivision に Bootstrap のスタイルを適用する
+    resultDivision.setAttribute('class', 'card');
+
+    // headerDivision と bodyDivision を resultDivision に差し込む
+    resultDivision.appendChild(headerDivision);
+    resultDivision.appendChild(bodyDivision);
+
+    // ツイートエリアの作成
     tweetDivision.innerText = '';
     const anchor = document.createElement('a');
-    const hrefValue = 'https://x.com/intent/tweet?button_hashtag=' +
-    encodeURIComponent('あなたのいいところ') +
-    '&ref_src=twsrc%5Etfw';
+    const hrefValue =
+      'https://x.com/intent/tweet?button_hashtag=' +
+      encodeURIComponent('あなたのいいところ') +
+      '&ref_src=twsrc%5Etfw';
 
     anchor.setAttribute('href', hrefValue);
     anchor.setAttribute('class', 'twitter-hashtag-button');
@@ -53,7 +68,6 @@ userNameInput.addEventListener(
   }
 )
 
-
 const answers = [
   '###userName###のいいところは声です。###userName###の特徴的な声は皆を惹きつけ、心に残ります。',
   '###userName###のいいところはまなざしです。###userName###に見つめられた人は、気になって仕方がないでしょう。',
@@ -69,7 +83,7 @@ const answers = [
   '###userName###のいいところは節度です。強引すぎない###userName###の考えに皆が感謝しています。',
   '###userName###のいいところは好奇心です。新しいことに向かっていく###userName###の心構えが多くの人に魅力的に映ります。',
   '###userName###のいいところは気配りです。###userName###の配慮が多くの人を救っています。',
-  '###userName###のいいところはその全てです。ありのままの###userName###自身がいいところなのです。',
+  '###userName###のいいところはそのすべてです。ありのままの###userName###自身がいいところなのです。',
   '###userName###のいいところは自制心です。やばいと思ったときにしっかりと衝動を抑えられる###userName###が皆から評価されています。'
 ];
 
@@ -122,6 +136,28 @@ function test() {
   );
 
   console.log('診断結果の文章のテスト終了');
+
+  console.log('同じ名前なら、同じ結果を出力することのテスト');
+
+  console.log('太郎');
+  console.assert(
+    assessment('太郎') === assessment('太郎'),
+    '入力が同じ名前なら同じ診断結果を出力する処理が正しくありません。'
+  )
+
+  console.log('次郎');
+  console.assert(
+    assessment('次郎') === assessment('次郎'),
+    '入力が同じ名前なら同じ診断結果を出力する処理が正しくありません。'
+  )
+
+  console.log('花子');
+  console.assert(
+    assessment('花子') === assessment('花子'),
+    '入力が同じ名前なら同じ診断結果を出力する処理が正しくありません。'
+  )
+
+  console.log('同じ名前なら、同じ結果を出力することのテスト終了');
 }
 
 test();
